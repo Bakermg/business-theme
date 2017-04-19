@@ -1,71 +1,79 @@
-
 <?php get_header(); ?>
-
-    <div class="jumbotron">
-      <div class="container">
-        <h1>Jumbotron heading</h1>
-        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-        <p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>
+  <section class="row title-bar">
+    <div class="container">
+        <div class="col-md-12">
+          <h1><?php echo __('Blog'); ?></h1>
       </div>
     </div>
+  </section>
 
-    <section class="row marketing">
-      <div class="container">
-        <div class="col-lg-4">
-          <div class="block">
-            <i class="fa fa-bar-chart fa-3x"></i>
-            <h3>Subheading</h3>
-            <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-          <div class="block">
-            <i class="fa fa-code fa-3x"></i>
-            <h3>Subheading</h3>
-            <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-          </div>
-        </div>
-     
-        <div class="col-lg-4">
-          <div class="block">
-            <i class="fa fa-desktop fa-3x"></i>
-            <h3>Subheading</h3>
-            <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="row content-region-1 pt50 pb40">
-      <div class="container">
+  <section class="row main">
+    <div class="container">
+      <?php if(is_active_sidebar('sidebar')) : ?>
+        <div class="col-md-8">
+      <?php else : ?>
         <div class="col-md-12">
-          <h1>Clean Bootstrap Theme</h1>
-          <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam sunt et odio! Minima sunt voluptate rem quia, reprehenderit aspernatur</p>
-        </div>
-      </div>
-    </section>
+      <?php endif; ?>
+        <?php if(have_posts()) : ?>
+          <?php while(have_posts()) : the_post(); ?>
+            <article class="post">
+              <div class="col-md-5">
+                <div class="post-thumbnail">
+                  <?php if(has_post_thumbnail()): ?>
+                     <?php the_post_thumbnail(); ?>
+                  <?php endif; ?>
+                </div>
+                <a href="<?php the_permalink(); ?>" class="btn btn-primary btn-block">
+                    <?php echo __('Read More'); ?>
+                </a>
+              </div>
+              <div class="col-md-7">
+              <ul class="meta">
+                <li>By 
+                  <a href="<?php echo get_author_posts_url(get_the_author_meta('ID')); ?>">
+                      <?php the_author(); ?>
+                    </a>
+                </li>
+                <li><?php the_time('F j, Y g:i a'); ?></li>
+                <li>
+                  <?php
+                      $categories = get_the_category();
+                      $separator = ", ";
+                      $output = '';
 
-    <section class="row content-region-2 pt40 pb40">
-      <div class="container">
-        <div class="col-md-5">
-          <img src="images/pic1.jpg">
-        </div>
-        <div class="col-md-7">
-          <h3>Theme Features</h3>
-          <ul class="list-group">
-            <li class="list-group-item">
-              <i class="fa fa-check" aria-hidden="true"> Custom Showcase Area</i> 
-            </li>
-            <li class="list-group-item">
-              <i class="fa fa-check" aria-hidden="true"> Bootstrap 3 Framework</i> 
-            </li>
-            <li class="list-group-item">
-              <i class="fa fa-check" aria-hidden="true"> Multiple Color Choices</i>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
+                      if($categories){
+                        foreach($categories as $category){
+                          $output .= '<a href="'.get_category_link($category->term_id).'">'.$category->cat_name .'</a>'. $separator;
+                          //$output .= $category->cat_name . $separator;
 
-   <?php get_footer(); ?>
+                        }
+                      }
+                      echo trim($output, $separator);
+                    ?>
+                </li>
+              </ul>
+                <h3><?php the_title(); ?></h3>
+                  <?php the_excerpt(); ?>
+              </div>
+            </article>
+            <div class="clr"></div>
+          <?php endwhile; ?>
+        <?php endif; ?>
+      </div>
+      <?php if(is_active_sidebar('sidebar')) : ?>
+        <div class="col-md-4">
+          <?php dynamic_sidebar('sidebar'); ?>
+        </div>
+      <?php endif; ?>
+    </div>
+  </section>
+
+  <?php if(is_active_sidebar('content-region-1')) : ?>
+      <?php dynamic_sidebar('content-region-1'); ?>
+    <?php endif; ?>
+
+    <?php if(is_active_sidebar('content-region-2')) : ?>
+      <?php dynamic_sidebar('content-region-2'); ?>
+    <?php endif; ?>
+
+<?php get_footer(); ?>
