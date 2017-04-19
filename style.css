@@ -68,6 +68,7 @@ a {
 
 article.post img{
   width: 100%;
+  border-radius: 3px;
 }
 .block{
   border: #ccc solid 1px;
@@ -95,6 +96,7 @@ article.post img{
 }
 .content-region-2 img{
   width: 100%;
+  border-radius: 3px;
 }
 .content-region-3 h4{
   border-left: 5px #0faf97 solid;
@@ -163,6 +165,7 @@ article.post img{
   width: 100%;
   height: auto;
   margin-bottom: 20px;
+  border-radius: 3px;
 }
 .panel-heading{
 	background: #0faf97 !important;
@@ -205,6 +208,7 @@ article.post img{
 .comment-meta img{
 	float: left;
 	margin-right: 10px;
+	border-radius: 3px;
 }
 .comment-meta time{
 	margin-left: 12px;
